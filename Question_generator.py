@@ -5,8 +5,7 @@ from datetime import datetime
 # Set your OpenAI GPT-3 API key
 openai.api_key = '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'
 
-with open('./questions.json', 'r') as file:
-        data = json.load(file)
+
 def generate_questions(day):
     # Define a prompt based on the day
     day="Sunday"
@@ -28,7 +27,7 @@ def generate_questions(day):
 
 def create_json_file(questions):
     # Create a dictionary with questions
-    data = {'questions': questions}
+    data = {'questions': questions, 'generated': datetime.now()}
 
     # Convert data to JSON format
     custom_json = json.dumps(data, indent=2)

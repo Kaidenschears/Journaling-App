@@ -22,7 +22,7 @@ body {
   .container {
     z-index: 1;
     width: 75%; /* 3/4 of the screen width */
-    height: 60%; /* Set a specific height */
+    height: 70%; /* Set a specific height */
     margin-top: -10%; /* Adjust margin to position the container higher */
     display: flex;
     flex-direction: column;
@@ -134,14 +134,13 @@ body {
     <textarea class="textbox" id="textbox" placeholder="Type something..." rows="6"></textarea>
     <button type="submit" class="submit-btn" id='submit' onclick="saveJournal()">Next Question</button>
     <button type="button" id='download_journal' class="download-btn" onclick="downloadJournal()">Download Journal</button>
-    <!-- <a  id="download-link" style="display: none;" download="journal.txt"><button type="button" class="download-btn">Download Journal</button></a> -->
     <button type="submit" class="clear-btn" onclick="clearLocalStorage()">Clear Journal</button>
     
 </div>
 
 <script>
   var questions = {{questions_list | tojson }};
-
+  document.getElementById("timer").innerHTML=questions.length*3 +":00";
   var currentQuestionIndex = 0;
 
   function makeStars(){
@@ -158,6 +157,20 @@ body {
       star.style.top = randomY + 'px';
       body.appendChild(star);
     }
+  }
+  function changeQColor(percentageElapsed) {
+    // Interpolate between black and white based on percentageElapsed
+    var color1 = [0, 0, 0]; // Black
+    var color2 = [255, 255, 255]; // White
+
+    var r = Math.round((1 - percentageElapsed) * color1[0] + percentageElapsed * color2[0]);
+    var g = Math.round((1 - percentageElapsed) * color1[1] + percentageElapsed * color2[1]);
+    var b = Math.round((1 - percentageElapsed) * color1[2] + percentageElapsed * color2[2]);
+
+    var textColor = 'rgb(' + r + ',' + g + ',' + b + ')';
+    
+    var text = document.getElementById('question');
+    text.style.color = textColor; // Change text color
   }
    let made_stars= 0;
   function startTimer(duration, display) {
@@ -204,6 +217,8 @@ body {
             middleColor = mixColors('#4682B4', '#191970', percentageElapsed*2 % 1.01);
             // Bottom color stays at its maximum
             topColor = mixColors('#4682B4', '#191970', percentageElapsed*2 % 1.01);
+            changeQColor(percentageElapsed);
+
         }
         if (percentageElapsed >=.75){ //star maker
             if (!made_stars){
@@ -303,7 +318,7 @@ body {
   function clearLocalStorage() {
     localStorage.clear();
 }
-
+// 3*questions.length
   window.onload = function () {
     startTimer(60 * 3*questions.length, document.getElementById('timer'));
     document.getElementById('question').textContent = questions[currentQuestionIndex];
