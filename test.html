@@ -53,51 +53,35 @@ body {
     outline: none;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   }
-
-  .submit-btn {
-    z-index: 1;
-    width: 50%; /* Adjust width */
-    height: 60px; /* Adjust height */
-    margin-top: 10px; /* Adjust margin to create space between textbox and button */
-    padding: 15px; /* Adjust padding */
-    border: none;
-    border-radius: 30px; /* Adjust border-radius */
-    background-color: #4CAF50; /* Green background */
-    color: white;
-    font-size: 1.1rem; /* Adjust font size */
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  .download-btn {
-    z-index: 1;
-    width: 50%; /* Adjust width */
-    height: 60px; /* Adjust height */
-    margin-top: 10px; /* Adjust margin to create space between textbox and button */
-    padding: 15px; /* Adjust padding */
-    border: none;
-    border-radius: 30px; /* Adjust border-radius */
-    background-color: #1a4bec; /* Green background */
-    color: white;
-    font-size: 1.1rem; /* Adjust font size */
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  .download-btn:hover {
-    background-color: #10019e; /* Darker green background on hover */
-  }
+  
+  .submit-btn,
+  .download-btn,
   .clear-btn {
     z-index: 1;
     width: 50%; /* Adjust width */
     height: 60px; /* Adjust height */
     margin-top: 10px; /* Adjust margin to create space between textbox and button */
-    padding: 15px; /* Adjust padding */
+    padding: 10px; /* Adjust padding */
     border: none;
     border-radius: 30px; /* Adjust border-radius */
-    background-color: #ee0519da; /* Green background */
+    background-color: #4CAF50; /* Green background for submit button */
     color: white;
     font-size: 1.1rem; /* Adjust font size */
     cursor: pointer;
     transition: background-color 0.3s ease;
+    text-decoration: none;
+    text-align: center;
+  }
+
+  .download-btn {
+    display:none;
+    background-color: #1a4bec; /* Green background */
+  }
+  .download-btn:hover {
+    background-color: #10019e; /* Darker green background on hover */
+  }
+  .clear-btn {
+    background-color: #ee0519da; /* Green background */
   }
   .clear-btn:hover {
     background-color: #a10000; /* Darker green background on hover */
@@ -106,7 +90,7 @@ body {
   .submit-btn:hover {
     background-color: #45a049; /* Darker green background on hover */
   }
-
+ 
   .star{
     z-index: 0;
      width:2px;
@@ -149,7 +133,8 @@ body {
     <div class="question" id="question">Please enter something:</div>
     <textarea class="textbox" id="textbox" placeholder="Type something..." rows="6"></textarea>
     <button type="submit" class="submit-btn" id='submit' onclick="saveJournal()">Next Question</button>
-    <button type="submit" class="download-btn" id="download-link" style="display: none;" download="journal.txt">Download Journal</button>
+    <button type="button" id='download_journal' class="download-btn" onclick="downloadJournal()">Download Journal</button>
+    <!-- <a  id="download-link" style="display: none;" download="journal.txt"><button type="button" class="download-btn">Download Journal</button></a> -->
     <button type="submit" class="clear-btn" onclick="clearLocalStorage()">Clear Journal</button>
     
 </div>
@@ -270,7 +255,33 @@ body {
 
     currentQuestionIndex = (currentQuestionIndex + 1);
     document.getElementById('question').textContent = questions[currentQuestionIndex];
-    document.getElementById('textbox').value='';}
+    document.getElementById('textbox').value='';
+    // document.getElementById('download_journal').style.display='block';
+}
+  }
+
+  function downloadJournal() {
+    var journalContent = localStorage.getItem('journal');
+    if (!journalContent) {
+      alert("Journal is empty. Please save some entries before downloading.");
+      return;
+    }
+    const date = new Date();
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+
+    // This arrangement can be altered based on how we want the date's format to appear.
+    let currentDate = `${day}-${month}-${year}`;
+    journalContent+= '\nDate: '+ currentDate;
+
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(journalContent));
+    element.setAttribute('download', 'journal.txt');
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
   }
 
   function saveJournal() {
@@ -292,8 +303,10 @@ body {
     journalContent += '\nQuestion: ' + question + '\nResponse: ' + response;
     localStorage.setItem('journal', journalContent);
     document.getElementById('download-link').setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(journalContent));
-    document.getElementById('download-link').style.display = 'block';
+    document.getElementById('download-link').setAttribute('download', 'journal.txt');
+    document.getElementById('download-link').click(); // Simulate click to trigger download
     nextQuestion(); // Move to the next question
+
   }
   function clearLocalStorage() {
     localStorage.clear();

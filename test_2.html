@@ -140,7 +140,7 @@ body {
 </div>
 
 <script>
-  var questions = {{questions_list | tojson }};
+  var questions = {questions};
 
   var currentQuestionIndex = 0;
 
@@ -305,7 +305,7 @@ body {
 }
 
   window.onload = function () {
-    startTimer(60 * 3*questions.length, document.getElementById('timer'));
+    startTimer(60 * .5, document.getElementById('timer'));
     document.getElementById('question').textContent = questions[currentQuestionIndex];
   };
 </script>

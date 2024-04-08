@@ -12,7 +12,7 @@ def index():
     with open('questions.json', 'r') as file:
         data = json.load(file)
     questions = data["questions"]
-    return render_template('index.html', questions=questions)
+    return render_template('index.html', questions_list=questions)
 
 if __name__ == '__main__':
     app.run(port=5055)
