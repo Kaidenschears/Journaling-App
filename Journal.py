@@ -4,16 +4,23 @@ import os
 import datetime
 import Question_generator
 
+
+
+# TODO: fix question change on page refresh 
 app = Flask(__name__)
 
 with open('questions.json', 'r') as file:
         temp = json.load(file)
-last_generated = temp["generated"]
+
+if "generated" in temp:
+    last_generated = temp["generated"]
+else:
+     last_generated=None
 
 
 def should_generate_new_question():
     # Check if last_question is empty or if a day has passed since the last question was generated
-    if not last_generated:
+    if not last_generated or last_generated =="":
         return True
     today = datetime.date.today()
     return datetime.datetime.strptime(last_generated, '%m-%d-%Y').date() < today

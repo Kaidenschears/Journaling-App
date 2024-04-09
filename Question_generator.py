@@ -8,9 +8,7 @@ openai.api_key = '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'
 
 def generate_questions(day):
     # Define a prompt based on the day
-    day="Sunday"
     if day == "Sunday":
-        pass
         prompt="Generate 7 reflective questions about the week."
     else:
         prompt = "Generate 2 reflective question about your day and one question to get to know yourself better. The structure of the output will be a numbered question followed by comma"
@@ -23,11 +21,12 @@ def generate_questions(day):
     print(response.choices[0].message.content)
     # Extract and return the generated questions
     generated_questions = str(response.choices[0].message.content).strip().split('\n')
-    return generated_questions
+
+    return list(filter(lambda x: x != "", generated_questions)) #filters empty strings
 
 def create_json_file(questions):
     # Create a dictionary with questions
-    data = {'questions': questions, 'generated': datetime.now()}
+    data = {'questions': questions, 'generated': str(datetime.now().strftime('%m-%d-%Y'))}
 
     # Convert data to JSON format
     custom_json = json.dumps(data, indent=2)
