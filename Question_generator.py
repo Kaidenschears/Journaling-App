@@ -5,7 +5,7 @@ from Secrets import API_KEY
 
 # Set your OpenAI GPT-3 API key
 openai.api_key = API_KEY
-print("API Key: " + openai.api_key + "----------\n\n\n\n\n")
+
 
 def generate_questions(day):
     # Define a prompt based on the day

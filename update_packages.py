@@ -1,5 +1,6 @@
 import subprocess
 import re
+# Use this script to easily update python packages
 
 def check_and_update_packages():
     # Check for outdated packages
