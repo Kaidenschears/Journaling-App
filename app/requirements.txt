@@ -22,3 +22,4 @@ tqdm==4.66.4
 typing_extensions==4.12.2
 Werkzeug==3.0.3
 zipp==3.19.2
+gunicorn
