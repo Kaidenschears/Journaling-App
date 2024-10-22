@@ -30,7 +30,7 @@ body {
   }
 
   .question {
-    font-size: 1.2rem;
+    font-size: 1.7rem;
     margin-bottom: 10px;
   }
 
@@ -160,15 +160,7 @@ body {
   }
   function changeQColor(percentageElapsed) {
     // Interpolate between black and white based on percentageElapsed
-    var color1 = [0, 0, 0]; // Black
-    var color2 = [255, 255, 255]; // White
-
-    var r = Math.round((1 - percentageElapsed) * color1[0] + percentageElapsed * color2[0]);
-    var g = Math.round((1 - percentageElapsed) * color1[1] + percentageElapsed * color2[1]);
-    var b = Math.round((1 - percentageElapsed) * color1[2] + percentageElapsed * color2[2]);
-
-    var textColor = 'rgb(' + r + ',' + g + ',' + b + ')';
-    
+    var textColor = percentageElapsed >= 0.7 ? 'rgb(255, 255, 255)' : 'rgb(0, 0, 0)';
     var text = document.getElementById('question');
     text.style.color = textColor; // Change text color
   }

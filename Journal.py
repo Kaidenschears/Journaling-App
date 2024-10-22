@@ -5,7 +5,8 @@ import Question_generator
 from pathlib import Path
 
 
-
+#TODO: Make an all done page for people that have compeleted their journaling for the day. 
+#TODO: Make questions more visible on transition. fix download file to have dates in format MM-DD-YYYY
 app = Flask(__name__)
 
 
